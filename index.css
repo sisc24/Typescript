@@ -1,0 +1,84 @@
+body {
+    background-color: #06000f !important;
+    
+}
+
+.titulo{
+   color: #c7c7c7 !important;
+   font-size: 60px;
+   font-weight: bold;
+}
+
+.dado{
+    background-color: #100129;
+    padding: 20px;
+    margin: 50px;
+    color: #c7c7c7;
+    transition: 0.5s;
+    border: none;
+    border-radius: 15px;
+}
+
+.dado:focus-visible{
+    border: none;
+    outline: none;
+}
+
+#dado1{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: none;
+    border-right: solid 8px #c7c7c7;
+}
+
+#dado2{
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+    border: none;
+    border-right: solid 8px #c7c7c7;
+}
+
+#dado3{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border: none;
+    border-left: solid 8px #c7c7c7;
+}
+
+#dado4{
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border: none;
+    border-left: solid 8px #c7c7c7;
+}
+
+
+.botao-wrap{
+    height: 100%;
+    align-items: center;
+}
+
+.botao-calcular {
+    align-self: center;
+    background-color: #180336;
+}
+
+.botao-calcular {
+    margin: 10px;
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;            
+    border-radius: 5px;
+    border: none;
+    font-size: 25px;
+    font-weight: bolder;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.botao-calcular:hover {
+    background-position: right center;
+}
