@@ -1,77 +1,96 @@
+function getInputNumber(id: string): number {
+  const input = document.getElementById(id) as HTMLInputElement | null;
+  if (!input) return 0;
+  const val = Number(input.value);
+  return isNaN(val) ? 0 : val;
+}
+
 type VarInvest = {
-    initialAmount: number;
-    annualContribution: number;
-    expectedReturn: number;
-    duration: number;
+  initialAmount: number;
+  annualContribution: number;
+  expectedReturn: number;
+  duration: number;
 };
 
 type resultInvest = {
-    year: string;
-    totalAmount: number;
-    totalContributions: number;
-    totalInterestEarned: number;
+  year: string;
+  totalAmount: number;
+  totalContributions: number;
+  totalInterestEarned: number;
 };
 
 type resultCalculation = resultInvest[] | string;
 
 function calculateInvestement(data: VarInvest): resultCalculation {
-    const { initialAmount, annualContribution, expectedReturn, duration } = data;
-    if (initialAmount < 0) {
-        return 'Valor de investimento anual deverá ser pelo menos zero'
-    }
-    if (duration <= 0) {
-        return 'Nenhum valor válido fornecido'
-    }
-    if (expectedReturn <= 0) {
-        return 'Valor de taxa de declaração de rendimentos deverá ser pelo menos zero'
-    }
+  const { initialAmount, annualContribution, expectedReturn, duration } = data;
 
-    let total = initialAmount;
-    let totalContributions = 0;
-    let totalInterestEarned = 0;
+  if (initialAmount < 0) {
+    return 'Valor de investimento anual deverá ser pelo menos zero';
+  }
+  if (duration <= 0) {
+    return 'Nenhum valor válido fornecido';
+  }
+  if (expectedReturn <= 0) {
+    return 'Valor de taxa de declaração de rendimentos deverá ser pelo menos zero';
+  }
 
-    const annualResults: resultInvest[] = [];
+  let total = initialAmount;
+  let totalContributions = initialAmount; // initial amount counts as first contribution
+  let totalInterestEarned = 0;
 
-    for (let i = 0; i < duration; i++) {
-        total = total * (1 + expectedReturn); 
-        totalInterestEarned = total - totalContributions - initialAmount;
-        totalContributions = totalContributions + annualContribution;
-        total = total + annualContribution;
+  const annualResults: resultInvest[] = [];
 
-        annualResults.push({
-            year: `Year ${i + 1}`,
-            totalAmount: total,
-            totalInterestEarned,
-            totalContributions
-        })
-    }
+  for (let i = 0; i < duration; i++) {
+    total = total * (1 + expectedReturn);
+    totalInterestEarned = total - totalContributions;
+    annualResults.push({
+      year: `Ano ${i + 1}`,
+      totalAmount: total,
+      totalContributions,
+      totalInterestEarned
+    });
 
+    totalContributions += annualContribution;
+    total += annualContribution;
+  }
 
-    return annualResults;
+  return annualResults;
 }
 
 function printResults(results: resultCalculation) {
-    if (typeof results === 'string') {
-        console.log(results);
-        return;
-    }
-    
-    for (const yearEndResult of results) {
-        console.log(yearEndResult.year);
-        console.log(`Total: ${yearEndResult.totalAmount.toFixed(0)}`);
-        console.log(`Total: ${yearEndResult.totalContributions.toFixed(0)}`);
-        console.log(`Total: ${yearEndResult.totalInterestEarned.toFixed(0)}`);
-        console.log('---------------------');
-    }
+  if (typeof results === 'string') {
+    console.log(results);
+    return;
+  }
+
+  // Get the last year's result (most recent)
+  const latestResult = results[results.length - 1];
+
+  // Update each <p> element
+  const yearEl = document.getElementById("Ano");
+  const totalAmountEl = document.getElementById("ValorTotal");
+  const totalContributionsEl = document.getElementById("ContribuicoesTotais");
+  const totalInterestEarnedEl = document.getElementById("TotalJurosAcumulados");
+
+  if (yearEl) yearEl.textContent = latestResult.year;
+  if (totalAmountEl) totalAmountEl.textContent = `💲 Valor Total | ${latestResult.totalAmount.toFixed(2)}`;
+  if (totalContributionsEl) totalContributionsEl.textContent = `💲 Contribuições Totais | ${latestResult.totalContributions.toFixed(2)}`;
+  if (totalInterestEarnedEl) totalInterestEarnedEl.textContent = `💲 Total de Juros Acumulados | ${latestResult.totalInterestEarned.toFixed(2)}`;
 }
 
-const VarInvest: VarInvest = {
-    initialAmount: 5000,
-    annualContribution: 500,
-    expectedReturn: 0.08,
-    duration: 10
+
+const button = document.getElementById("botaoCalcular");
+if (button) {
+  button.addEventListener("click", () => {
+    const varInvest: VarInvest = {
+      initialAmount: getInputNumber("dado1"),
+      annualContribution: getInputNumber("dado2"),
+      expectedReturn: getInputNumber("dado3"),
+      duration: getInputNumber("dado4"),
+    };
+
+    const results = calculateInvestement(varInvest);
+
+    printResults(results);
+  });
 }
-
-const results = calculateInvestement(VarInvest)
-
-printResults(results);
