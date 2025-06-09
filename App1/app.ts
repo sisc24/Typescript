@@ -35,7 +35,7 @@ function calculateInvestement(data: VarInvest): resultCalculation {
   }
 
   let total = initialAmount;
-  let totalContributions = initialAmount; // initial amount counts as first contribution
+  let totalContributions = initialAmount;
   let totalInterestEarned = 0;
 
   const annualResults: resultInvest[] = [];
@@ -63,10 +63,8 @@ function printResults(results: resultCalculation) {
     return;
   }
 
-  // Get the last year's result (most recent)
   const latestResult = results[results.length - 1];
 
-  // Update each <p> element
   const yearEl = document.getElementById("Ano");
   const totalAmountEl = document.getElementById("ValorTotal");
   const totalContributionsEl = document.getElementById("ContribuicoesTotais");
